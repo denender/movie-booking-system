@@ -12,24 +12,12 @@ public class BookingRequest {
 
 	private String screenId;
 	
-	private String theaterId;
-	
 	private Shows showTiming;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date showDate;
 	
 	private List<String> seats;
-	
-	public Date getShowDate() {
-		return showDate;
-	}
-
-	public void setShowDate(Date showDate) {
-		this.showDate = showDate;
-	}
-
-	
 
 	public String getScreenId() {
 		return screenId;
@@ -39,13 +27,6 @@ public class BookingRequest {
 		this.screenId = screenId;
 	}
 
-	public String getTheaterId() {
-		return theaterId;
-	}
-
-	public void setTheaterId(String theaterId) {
-		this.theaterId = theaterId;
-	}
 
 	public Shows getShowTiming() {
 		return showTiming;
@@ -55,6 +36,14 @@ public class BookingRequest {
 		this.showTiming = showTiming;
 	}
 
+	public Date getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(Date showDate) {
+		this.showDate = showDate;
+	}
+
 	public List<String> getSeats() {
 		return seats;
 	}
@@ -62,5 +51,7 @@ public class BookingRequest {
 	public void setSeats(List<String> seats) {
 		this.seats = seats;
 	}
+	
+	
 
 }

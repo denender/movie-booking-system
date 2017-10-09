@@ -42,18 +42,13 @@ public class BookingService {
 		BookingResponse response= new BookingResponse();
 		
 		Booking booking = new Booking();
-		List<Show> shows = showRepository.findByShowDateAndShowTiming(bookingRequest.getShowDate(),bookingRequest.getShowTiming());
+		List<Show> shows = showRepository.findByMovieNameIgnoreCaseAndShowDateAndShowTiming(movieName,bookingRequest.getShowDate(),bookingRequest.getShowTiming());
 		
 		if(shows.size()==0){
-			throw new Exception("Show does not exists");
+			throw new Exception("Show does not exists.");
 		}
-		
 		
 		Show show=shows.get(0);
-		
-		if(!show.getMovieName().equals(movieName)){
-			throw new Exception("Invalid Movie Name");
-		}
 		
 		@SuppressWarnings({"unchecked" })
 		Map<String,Boolean> seats = JSONUtils.toObject(show.getSeats(),Map.class);
@@ -101,9 +96,18 @@ public class BookingService {
 	}
 
 	@Transactional
-	public BookingResponse cancelTicket(Long bookingId) {
+	public BookingResponse cancelTicket(Long bookingId) throws Exception {
 		BookingResponse response= new BookingResponse();
 		Booking booking = bookingRepository.findOne(bookingId);
+		
+		if(booking == null){
+			throw new Exception("No booking found with booking id "+bookingId);
+		}
+		
+		if(booking.getStatus().equals("Canceled")){
+			throw new Exception("Tickets have been already cancled with booking id "+bookingId);
+		}
+		
 		Show show = showRepository.findOne(booking.getShow().getId());
 		@SuppressWarnings({"unchecked" })
 		Map<String,Boolean> seats = JSONUtils.toObject(show.getSeats(),Map.class);
@@ -135,7 +139,7 @@ public class BookingService {
 		}else if(theaterId!=null){
 			shows=showRepository.findByMovieNameAndTheaterId(movieName, theaterId);
 		} else {
-			shows=showRepository.findByMovieName(movieName);
+			shows=showRepository.findByMovieNameIgnoreCase(movieName);
 		}
 		
 		if(shows.size()>0){

@@ -11,11 +11,11 @@ public class BookingResponse {
 	
 	private String movieName;
 	
+	private String message;
+	
 	private ShowResponse show;
 	
 	private TheaterRequest theater;
-	
-	private String message;
 	
 	private List<String> seats;
 

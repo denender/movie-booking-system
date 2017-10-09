@@ -7,18 +7,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.movie.booking.request.ScreenRequest;
 import com.movie.booking.request.TheaterRequest;
 import com.movie.booking.service.TheaterService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@RestController
-@Api(description="These endpoints handles all operations related theater")
-@RequestMapping("/theater")
+//@RestController
+//@Api(description="These endpoints handles all operations related theater")
+//@RequestMapping("/theater")
 public class TheaterController {
 
 	@Autowired
