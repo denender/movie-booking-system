@@ -23,6 +23,7 @@ public class SwaggerConfig {
 				.description("Online Movie Booking System").build();
 
 		return new Docket(DocumentationType.SWAGGER_2)
+				.useDefaultResponseMessages(false)
 				.apiInfo(apiInfo)
 				.select()                                  
 				.apis(RequestHandlerSelectors.any())       
