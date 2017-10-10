@@ -16,7 +16,9 @@ public interface ShowRepository extends CrudRepository<Show,Integer> {
 	
 	public List<Show> findByMovieNameIgnoreCase(String movieName);
 	
-	public List<Show> findByMovieNameAndTheaterId(String movieName,String theaterId);
+	public List<Show> findByMovieNameIgnoreCaseAndTheaterId(String movieName,String theaterId);
 	
-	public List<Show> findByMovieNameAndTheaterIdAndScreenId(String movieName,String theaterId,String screenId);
+	public List<Show> findByMovieNameIgnoreCaseAndTheaterIdAndShowDate(String movieName,String theaterId,Date showDate);
+
+	public List<Show> findByMovieNameIgnoreCaseAndShowDate(String movieName, Date showDate);
 }

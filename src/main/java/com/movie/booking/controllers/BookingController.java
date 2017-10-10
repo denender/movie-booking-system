@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@Api(description="These endpoints handles all operations related to seats")
+@Api(description="These endpoints handles operations related to seat availability,booking a seat and canceling a booking.")
 @RequestMapping("/seats")
 public class BookingController {
 	@Autowired
@@ -35,22 +35,23 @@ public class BookingController {
 	@RequestMapping(value="/book/{movieName}",method=RequestMethod.POST,produces={"application/json"})
 	@ApiOperation(value="Book a ticket")
 	@ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 400, message = "Bad Request" ,response = Error.class),
-            @ApiResponse(code = 404, message = "Bad Request" ,response = Error.class),
-            @ApiResponse(code = 500, message = "Failure",response = Error.class)})
-	public BookingResponse bookTicket(@PathVariable @ApiParam(value="Movie name" ,defaultValue="Spyder") String movieName,@RequestBody BookingRequest bookingRequest) throws NotFoundException, InvalidRequestException{
+			@ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request" ,response = Error.class),
+			@ApiResponse(code = 404, message = "Bad Request" ,response = Error.class),
+			@ApiResponse(code = 500, message = "Failure",response = Error.class)})
+	public BookingResponse bookTicket(@PathVariable @ApiParam(value="Movie name" ,defaultValue="Spyder") String movieName,@RequestBody 
+			BookingRequest bookingRequest) throws NotFoundException, InvalidRequestException{
 		return bookingService.bookTicket(movieName,bookingRequest);
 	}
 
 	@RequestMapping(value="/cancel/{bookingId}",method=RequestMethod.PUT,produces={"application/json"})
 	@ApiOperation(value="Cancel a ticket")
 	@ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
-            @ApiResponse(code = 404, message = "Not found" ,response = Error.class),
-            @ApiResponse(code = 500, message = "Failure",response = Error.class)})
-	public BookingResponse cancelTicket(@PathVariable Long bookingId) throws InvalidRequestException, NotFoundException{
+			@ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = Error.class),
+			@ApiResponse(code = 404, message = "Not found" ,response = Error.class),
+			@ApiResponse(code = 500, message = "Failure",response = Error.class)})
+	public BookingResponse cancelTicket(@PathVariable @ApiParam(value="Booking Id" ,defaultValue="1") Long bookingId) throws InvalidRequestException, NotFoundException{
 		return bookingService.cancelTicket(bookingId);
 	}
 
@@ -58,12 +59,13 @@ public class BookingController {
 	@RequestMapping(value="/availability/{movieName}",method=RequestMethod.GET,produces={"application/json"})
 	@ApiOperation(value="Check Availability of seats ")
 	@ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 404, message = "Not found" ,response = Error.class),
-            @ApiResponse(code = 500, message = "Failure",response = Error.class)})
-	public AvailableSeats checkAvailability (@PathVariable @ApiParam(value="Movie name" ,defaultValue="Spyder") String movieName,@RequestParam(value="theaterId",required=false) String theaterId,
-			@RequestParam(value="screenId",required=false) String screenId,@RequestParam(value="showDate",required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date showDate) throws Exception{
-		return bookingService.checkAvailability(movieName,theaterId,screenId);
+			@ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request" ,response = Error.class),
+			@ApiResponse(code = 404, message = "Not found" ,response = Error.class),
+			@ApiResponse(code = 500, message = "Failure",response = Error.class)})
+	public AvailableSeats checkAvailability (@PathVariable @ApiParam(value="Movie name" ,defaultValue="Spyder") String movieName,@RequestParam(value="theaterId",required=false)@ApiParam(value="Theater ID" ,defaultValue="T1") String theaterId,
+			@RequestParam(value="showDate",required=false) @ApiParam(value="Show Date" ,defaultValue="2017-10-13") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)Date showDate) throws Exception{
+		return bookingService.checkAvailability(movieName,theaterId,showDate);
 
 	}
 
