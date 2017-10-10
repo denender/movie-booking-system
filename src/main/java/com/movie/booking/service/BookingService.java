@@ -14,6 +14,8 @@ import com.movie.booking.entities.Booking;
 import com.movie.booking.entities.Screen;
 import com.movie.booking.entities.Show;
 import com.movie.booking.entities.Theater;
+import com.movie.booking.errors.InvalidRequestException;
+import com.movie.booking.errors.NotFoundException;
 import com.movie.booking.repository.BookingRepository;
 import com.movie.booking.repository.ScreenRepository;
 import com.movie.booking.repository.ShowRepository;
@@ -38,14 +40,14 @@ public class BookingService {
 	private ScreenRepository screenRepository;
 	
 	@Transactional
-	public BookingResponse bookTicket(String movieName, BookingRequest bookingRequest) throws Exception {
+	public BookingResponse bookTicket(String movieName, BookingRequest bookingRequest) throws NotFoundException, InvalidRequestException {
 		BookingResponse response= new BookingResponse();
 		
 		Booking booking = new Booking();
 		List<Show> shows = showRepository.findByMovieNameIgnoreCaseAndShowDateAndShowTiming(movieName,bookingRequest.getShowDate(),bookingRequest.getShowTiming());
 		
 		if(shows.size()==0){
-			throw new Exception("Show does not exists.");
+			throw new NotFoundException("Show does not exists.");
 		}
 		
 		Show show=shows.get(0);
@@ -56,7 +58,7 @@ public class BookingService {
 		
 		for(String seatNo:bookingSeats){
 			if(seats.get(seatNo)==null || seats.get(seatNo) ){
-				throw new Exception("Seats not avaiable");
+				throw new InvalidRequestException("Seats not avaiable");
 			}
 			seats.put(seatNo, true);
 		}
@@ -96,16 +98,16 @@ public class BookingService {
 	}
 
 	@Transactional
-	public BookingResponse cancelTicket(Long bookingId) throws Exception {
+	public BookingResponse cancelTicket(Long bookingId) throws NotFoundException, InvalidRequestException {
 		BookingResponse response= new BookingResponse();
 		Booking booking = bookingRepository.findOne(bookingId);
 		
 		if(booking == null){
-			throw new Exception("No booking found with booking id "+bookingId);
+			throw new NotFoundException("No booking found with booking id "+bookingId);
 		}
 		
 		if(booking.getStatus().equals("Canceled")){
-			throw new Exception("Tickets have been already cancled with booking id "+bookingId);
+			throw new InvalidRequestException("Tickets have been already cancled with booking id "+bookingId);
 		}
 		
 		Show show = showRepository.findOne(booking.getShow().getId());
@@ -128,7 +130,7 @@ public class BookingService {
 		return response;
 	}
 
-	public AvailableSeats checkAvailability(String movieName, String theaterId, String screenId) {
+	public AvailableSeats checkAvailability(String movieName, String theaterId, String screenId) throws NotFoundException{
 		AvailableSeats availableSeats=new AvailableSeats();
 		availableSeats.setMovieName(movieName);
 		List<ShowResponse> showResponses=new ArrayList<>();
@@ -172,6 +174,8 @@ public class BookingService {
 				showResponse.setAvailableSeats(availableSeatsList);
 				showResponses.add(showResponse);
 			}
+		}else{
+			throw new NotFoundException("No show exists for movie "+movieName);
 		}
 		
 		
