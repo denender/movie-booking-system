@@ -39,8 +39,8 @@ public class BookingController {
 			@ApiResponse(code = 400, message = "Bad Request" ,response = Error.class),
 			@ApiResponse(code = 404, message = "Bad Request" ,response = Error.class),
 			@ApiResponse(code = 500, message = "Failure",response = Error.class)})
-	public BookingResponse bookTicket(@PathVariable @ApiParam(value="Movie name" ,defaultValue="Spyder") String movieName,@RequestBody 
-			BookingRequest bookingRequest) throws NotFoundException, InvalidRequestException{
+	public BookingResponse bookTicket(@PathVariable @ApiParam(value="Movie name" ,defaultValue="Spyder") String movieName,
+			@RequestBody BookingRequest bookingRequest) throws NotFoundException, InvalidRequestException{
 		return bookingService.bookTicket(movieName,bookingRequest);
 	}
 

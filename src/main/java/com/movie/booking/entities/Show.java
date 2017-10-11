@@ -15,6 +15,7 @@ import com.movie.booking.utils.Shows;
 @Entity(name="DailyShows")
 public class Show {
 
+	
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
@@ -36,6 +37,22 @@ public class Show {
 	
 	@Column(length=10000)
 	private String seats;
+	
+	public Show(Integer id, String movieName, String theaterId, String screenId, Date startTime, Date endTime,
+			Date showDate, Shows showTiming, String seats) {
+		this.id = id;
+		this.movieName = movieName;
+		this.theaterId = theaterId;
+		this.screenId = screenId;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.showDate = showDate;
+		this.showTiming = showTiming;
+		this.seats = seats;
+	}
+
+	public Show() {
+	}
 
 	public Integer getId() {
 		return id;
