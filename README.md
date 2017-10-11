@@ -24,7 +24,7 @@ The solution the problem is designed for a theater having multiple screens.Each 
 * After cloning the project change  directory to **movie-booking-system**
 * Run command **mvn clean package**
 * Use command **java -jar target/movie-booking-system-0.0.1-SNAPSHOT.jar**
-* Go to URL **http://localhost:8082/swagger-ui.html#/booking-controller**
+* Go to URL **http://localhost:8082/swagger-ui.html#/booking-controller** for accessing endpoints via browser.
 
 ## Checking availability of seats ##
 
